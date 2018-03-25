@@ -59,8 +59,8 @@ func commandByDeviceID(did string, cid string, b string, p bool) (string, int) {
 		// send 403 no command exists
 		return "", http.StatusForbidden
 	}
-	url := d.Service.Addressable.GetBaseURL() + strings.Replace(c.Put.Action.Path, DEVICEIDURLPARAM, d.Id.Hex(), -1)
-	if p {
+	if p {	
+		url := d.Servie.Addressable.GetBaseURL() + strings.Replace(c.Put.Action.Path, DEVICEIDURLPARAM, d.Id.Hex(), -1)
 		loggingClient.Info("Issuing PUT command to: " + url)
 		req, err := http.NewRequest(PUT, url, strings.NewReader(b))
 		if err != nil {
@@ -74,6 +74,7 @@ func commandByDeviceID(did string, cid string, b string, p bool) (string, int) {
 		buf.ReadFrom(resp.Body)
 		return buf.String(), resp.StatusCode
 	} else {
+		url := d.Service.Addressable.GetBaseURL() + strings.Replace(c.Get.Action.Path, DEVICEIDURLPARAM, d.Id.Hex(), -1)
 		loggingClient.Info("Issuing GET command to: " + url)
 		req, err := http.NewRequest(GET, url, nil)
 		if err != nil {
